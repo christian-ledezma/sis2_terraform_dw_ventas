@@ -1,0 +1,28 @@
+{
+	"name": "ds_dim_producto",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_ventas_dw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "codInventario",
+				"type": "varchar"
+			},
+			{
+				"name": "descripcion",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dim_producto"
+		}
+	}
+}

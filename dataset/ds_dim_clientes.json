@@ -1,0 +1,25 @@
+{
+	"name": "ds_dim_clientes",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_ventas_dw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "idCliente",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dim_cliente"
+		}
+	}
+}

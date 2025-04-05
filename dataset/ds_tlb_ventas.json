@@ -1,0 +1,57 @@
+{
+	"name": "ds_tlb_ventas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_ventas_db",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DB"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "NoFactura",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CodInventario",
+				"type": "varchar"
+			},
+			{
+				"name": "Descripcion",
+				"type": "varchar"
+			},
+			{
+				"name": "Cantidad",
+				"type": "varchar"
+			},
+			{
+				"name": "Fecha",
+				"type": "varchar"
+			},
+			{
+				"name": "PrecioUnitario",
+				"type": "varchar"
+			},
+			{
+				"name": "Total",
+				"type": "varchar"
+			},
+			{
+				"name": "IdCliente",
+				"type": "varchar"
+			},
+			{
+				"name": "Pais",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tbl_ventas"
+		}
+	}
+}
