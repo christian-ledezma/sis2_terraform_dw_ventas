@@ -1,0 +1,91 @@
+{
+	"name": "df_hechos_ventas_v1",
+	"properties": {
+		"folder": {
+			"name": "DB"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_tlb_ventas",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_hechos_ventas",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "cast1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          NoFactura as integer,",
+				"          CodInventario as string,",
+				"          Pais as string,",
+				"          Fecha as string,",
+				"          IdCliente as string,",
+				"          Cantidad as string,",
+				"          precioUnitario as string,",
+				"          total as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'Select NoFactura\\n  ,CodInventario\\n  ,Pais\\n  ,Fecha\\n  ,IdCliente\\n  ,Cantidad\\n  ,replace(PrecioUnitario,\\',\\',\\'.\\') as precioUnitario\\n  ,replace(Total,\\',\\',\\'.\\') as total\\n  from [dbo].[tbl_ventas]',",
+				"     format: 'query') ~> source1",
+				"source1 cast(output(",
+				"          NoFactura as integer,",
+				"          Fecha as date,",
+				"          IdCliente as integer,",
+				"          Cantidad as integer,",
+				"          precioUnitario as decimal(2,0),",
+				"          total as decimal(2,0)",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id_venta as integer,",
+				"          noFactura as integer,",
+				"          cantidad as integer,",
+				"          precioUnitario as decimal(9,2),",
+				"          total as decimal(9,2),",
+				"          fecha as date,",
+				"          codInventario as string,",
+				"          pais as string,",
+				"          idCliente as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          noFactura = NoFactura,",
+				"          cantidad = Cantidad,",
+				"          precioUnitario,",
+				"          total,",
+				"          fecha = Fecha,",
+				"          codInventario = CodInventario,",
+				"          pais = Pais,",
+				"          idCliente = IdCliente",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
