@@ -27,6 +27,9 @@
 			"transformations": [
 				{
 					"name": "sort1"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -37,10 +40,12 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: 'Select distinct CodInventario, Descripcion from [dbo].[tbl_ventas]',",
+				"     query: 'Select distinct UPPER(CodInventario) as CodInventario, Descripcion from [dbo].[tbl_ventas]',",
 				"     format: 'query') ~> source1",
 				"source1 sort(asc(CodInventario, true)) ~> sort1",
-				"sort1 sink(allowSchemaDrift: true,",
+				"sort1 aggregate(groupBy(CodInventario),",
+				"     each(match(name != 'CodInventario'), $$ = first($$))) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          codInventario as string,",
